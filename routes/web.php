@@ -41,18 +41,14 @@ Route::group([
     Route::group([
         'prefix' => 'requests'
     ], function(){
-        Route::get('/', function(){
-            return "Заявки пользователей";
-        })->name('lk.requests');
-
         Route::get('/{uuid}', function($uuid){
 
             $req = \App\Models\Request::where('uuid', $uuid)->firstOrFail();
 
             return view('lk_request', ['req' => $req]);
-        })->name('lk.request.once')->where(['uuid' => '[A-z0-9\-]+'])->middleware(\App\Http\Middleware\AdminMiddleware::class);
+        })->name('lk.request.once')->where(['uuid' => '[A-z0-9\-]+'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class]);
 
-        Route::post('/{uuid}', [\App\Http\Controllers\RequestController::class, 'update'])->where(['uuid' => '[A-z0-9\-]+'])->middleware(\App\Http\Middleware\AdminMiddleware::class);
+        Route::post('/{uuid}', [\App\Http\Controllers\RequestController::class, 'update'])->where(['uuid' => '[A-z0-9\-]+'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class]);
 
     });
 });
