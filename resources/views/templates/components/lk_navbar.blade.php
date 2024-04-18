@@ -19,6 +19,9 @@
           <li>
             <a href="{{ route('lk') }}" class="<?=(Route::currentRouteName() === 'lk') ? 'font-bold ' : '';?>block py-2 px-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:underline md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Заявки пользователей</a>
           </li>
+          <li>
+            <a href="{{ route('lk.stat') }}" class="<?=(Route::currentRouteName() === 'lk.stat') ? 'font-bold ' : '';?>block py-2 px-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:underline md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Статистика</a>
+          </li>
         @else
           <li>
             <a href="{{ route('lk') }}" class="<?=(Route::currentRouteName() === 'lk') ? 'font-bold ' : '';?>block py-2 px-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:underline md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Мои заявки</a>

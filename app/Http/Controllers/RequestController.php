@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -92,5 +93,65 @@ class RequestController extends Controller
         $req->save();
 
         return back();
+    }
+
+    public static function getStat($days = 15){
+
+        $today = Carbon::today();
+        $d5 = Carbon::today()->subDays($days);
+
+        $data = \App\Models\Request::where('created_at', '>=', $d5)->where('created_at', '<=', $today)->get();
+
+        $new = [];
+        $confirmed = [];
+        $rejected = [];
+
+        foreach ($data as $dt){
+            if ($dt->is_confirmed){
+                $confirmed[Carbon::create($dt->created_at)->format('d.m.Y')][] = $dt;
+            }else if($dt->is_rejected){
+                $rejected[Carbon::create($dt->created_at)->format('d.m.Y')][] = $dt;
+            }else{
+                $new[Carbon::create($dt->created_at)->format('d.m.Y')][] = $dt;
+            }
+        }
+
+        $graph = [
+            [
+                'name' => 'Новые заявки',
+                'data' => []
+            ],
+            [
+                'name' => 'Отклонённые',
+                'data' => []
+            ],
+            [
+                'name' => 'Подтвержденные',
+                'data' => []
+            ],
+        ];
+
+        foreach ($new as $key => $val) {
+            $graph[0]['data'][] = [
+                'x' => $key,
+                'y' => count($val)
+            ];
+        }
+
+        foreach ($rejected as $key => $val) {
+            $graph[1]['data'][] = [
+                'x' => $key,
+                'y' => count($val)
+            ];
+        }
+
+        foreach ($confirmed as $key => $val) {
+            $graph[2]['data'][] = [
+                'x' => $key,
+                'y' => count($val)
+            ];
+        }
+
+        return $graph;
     }
 }
