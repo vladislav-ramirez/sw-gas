@@ -97,7 +97,7 @@ class RequestController extends Controller
 
     public static function getStat($days = 15){
 
-        $today = Carbon::today();
+        $today = Carbon::now();
         $d5 = Carbon::today()->subDays($days);
 
         $data = \App\Models\Request::where('created_at', '>=', $d5)->where('created_at', '<=', $today)->get();
